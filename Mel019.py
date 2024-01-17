@@ -366,8 +366,8 @@ class You(OthelloAI):
         return move
 
 # 各AIクラスのインスタンスを作成
-teruchi = OthelloAI('🍦', 'てるち')
-momo = OchibiAI('💲', 'ももぽん')
+# teruchi = OthelloAI('🍦', 'てるち')
+# momo = OchibiAI('💲', 'ももぽん')
 
 # ゲームの実行
 #game(teruchi, momo, N=8)
