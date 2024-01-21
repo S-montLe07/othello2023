@@ -572,45 +572,45 @@ def board_to_string(board):
 
 
 
-## 追加⑤エンドゲームのデータベース ##
+# ## 追加⑤エンドゲームのデータベース ##
 
-class OthelloAI:
-    # ...
+# class OthelloAI:
+#     # ...
 
-    def __init__(self, face, name):
-        # ...
-        self.endgame_database = self.load_endgame_database()
+#     def __init__(self, face, name):
+#         # ...
+#         self.endgame_database = self.load_endgame_database()
 
-    def load_endgame_database(self):
-        # ここにエンドゲームのデータベースをロードするコード
-        # 例: {ボードの状態: 最適な手, ...}
-        return {
-            "..........*......O......***....": (5, 4),
-            # その他のエンドゲームの手
-        }
+#     def load_endgame_database(self):
+#         # ここにエンドゲームのデータベースをロードするコード
+#         # 例: {ボードの状態: 最適な手, ...}
+#         return {
+#             "..........*......O......***....": (5, 4),
+#             # その他のエンドゲームの手
+#         }
 
-    def move(self, board, player):
-        # ...
-        # ゲームの終盤かどうかの判断
-        if self.is_endgame(board):
-            endgame_move = self.endgame_database.get(board_to_string(board))
-            if endgame_move:
-                return endgame_move
+#     def move(self, board, player):
+#         # ...
+#         # ゲームの終盤かどうかの判断
+#         if self.is_endgame(board):
+#             endgame_move = self.endgame_database.get(board_to_string(board))
+#             if endgame_move:
+#                 return endgame_move
 
-        # 通常の戦略
-        return self.minimax_strategy(board, player)
+#         # 通常の戦略
+#         return self.minimax_strategy(board, player)
 
-    def is_endgame(self, board):
-        # ゲームが終盤かどうかを判断するロジック
-        # 例: 空きマスの数が少ない場合など
-        return count_board(board, EMPTY) <= 10
+#     def is_endgame(self, board):
+#         # ゲームが終盤かどうかを判断するロジック
+#         # 例: 空きマスの数が少ない場合など
+#         return count_board(board, EMPTY) <= 10
 
-    # ミニマックス戦略の実装
-    # ...
+#     # ミニマックス戦略の実装
+#     # ...
 
-def board_to_string(board):
-    # ボードを文字列に変換する関数
-    return ''.join(['O' if x == 1 else '*' if x == -1 else '.' for x in board.flatten()])
+# def board_to_string(board):
+#     # ボードを文字列に変換する関数
+#     return ''.join(['O' if x == 1 else '*' if x == -1 else '.' for x in board.flatten()])
 
 
 
