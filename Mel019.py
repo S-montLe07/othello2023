@@ -614,41 +614,41 @@ def board_to_string(board):
 
 
 
-## 追加⑥機械学習の活用 ##
+# ## 追加⑥機械学習の活用 ##
 
-class OthelloAI:
-    def __init__(self):
-        self.model = self.create_model()
-        # その他の初期化処理...
+# class OthelloAI:
+#     def __init__(self):
+#         self.model = self.create_model()
+#         # その他の初期化処理...
 
-    def create_model(self):
-        # ニューラルネットワークモデルの作成
-        model = ...
-        return model
+#     def create_model(self):
+#         # ニューラルネットワークモデルの作成
+#         model = ...
+#         return model
 
-    def train(self, training_data):
-        # 学習プロセス
-        for episode in range(number_of_episodes):
-            state = self.reset_environment()
-            done = False
-            while not done:
-                action = self.choose_action(state)
-                next_state, reward, done = self.step(action)
-                self.remember(state, action, reward, next_state, done)
-                state = next_state
-            self.replay()  # 経験再生
+#     def train(self, training_data):
+#         # 学習プロセス
+#         for episode in range(number_of_episodes):
+#             state = self.reset_environment()
+#             done = False
+#             while not done:
+#                 action = self.choose_action(state)
+#                 next_state, reward, done = self.step(action)
+#                 self.remember(state, action, reward, next_state, done)
+#                 state = next_state
+#             self.replay()  # 経験再生
 
-    def choose_action(self, state):
-        # 行動選択ロジック
-        if np.random.rand() <= epsilon:
-            return self.random_action()
-        else:
-            return self.model.predict_action(state)
+#     def choose_action(self, state):
+#         # 行動選択ロジック
+#         if np.random.rand() <= epsilon:
+#             return self.random_action()
+#         else:
+#             return self.model.predict_action(state)
 
-    def step(self, action):
-        # ゲームの1ステップを進める
-        # ...
-        return next_state, reward, done
+#     def step(self, action):
+#         # ゲームの1ステップを進める
+#         # ...
+#         return next_state, reward, done
 
-    # その他の補助関数
-    # ...
+#     # その他の補助関数
+#     # ...
