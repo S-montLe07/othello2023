@@ -198,7 +198,7 @@ def game(player1: OthelloAI, player2: OthelloAI,N=6):
 # ## ここから追加 ##
 # ## ここから追加 ##
 
-# board = init_board(N=8)
+board = init_board(N=8)
 # board
 
 # display_board(board)
@@ -221,149 +221,149 @@ def game(player1: OthelloAI, player2: OthelloAI,N=6):
 #         selected_move = random.choice(valid_moves)
 #         return selected_move
 
-# class OthelloAI(object):
-#     def __init__(self, face, name):
-#         self.face = face
-#         self.name = name
+class OthelloAI(object):
+    def __init__(self, face, name):
+        self.face = face
+        self.name = name
 
-#     def __repr__(self):
-#         return f"{self.face}{self.name}"
+    def __repr__(self):
+        return f"{self.face}{self.name}"
 
-#     def move(self, board: np.array, color: int)->tuple[int, int]:
-#         """
-#         ボードの状態と色(color)が与えられたとき、
-#         どこに置くか返す(row, col)
-#         """
-#         valid_moves = get_valid_moves(board, color)
-#         return valid_moves[0]
+    def move(self, board: np.array, color: int)->tuple[int, int]:
+        """
+        ボードの状態と色(color)が与えられたとき、
+        どこに置くか返す(row, col)
+        """
+        valid_moves = get_valid_moves(board, color)
+        return valid_moves[0]
 
-#     def say(self, board: np.array, piece: int)->str:
-#         if count_board(board, piece) >= count_board(board, -piece):
-#             return 'やったー'
-#         else:
-#             return 'がーん'
+    def say(self, board: np.array, piece: int)->str:
+        if count_board(board, piece) >= count_board(board, -piece):
+            return 'やったー'
+        else:
+            return 'がーん'
 
-# import sys
+import sys
 
-# def display_board2(board, marks):
-#     """
-#     オセロ盤を表示する
-#     """
-#     global BLACK_NAME, WHITE_NAME
-#     clear_output(wait=True)
-#     for row, rows in enumerate(board):
-#         for col, piece in enumerate(rows):
-#             if (row, col) in marks:
-#                 print(marks[(row,col)], end='')
-#             else:
-#                 print(stone(piece), end='')
-#         if row == 1:
-#             print(f'  {BLACK_NAME}')
-#         elif row == 2:
-#             print(f'   {stone(BLACK)}: {count_board(board, BLACK):2d}')
-#         elif row == 3:
-#             print(f'  {WHITE_NAME}')
-#         elif row == 4:
-#             print(f'   {stone(WHITE)}: {count_board(board, WHITE):2d}')
-#         else:
-#             print()  # New line after each row
+def display_board2(board, marks):
+    """
+    オセロ盤を表示する
+    """
+    global BLACK_NAME, WHITE_NAME
+    clear_output(wait=True)
+    for row, rows in enumerate(board):
+        for col, piece in enumerate(rows):
+            if (row, col) in marks:
+                print(marks[(row,col)], end='')
+            else:
+                print(stone(piece), end='')
+        if row == 1:
+            print(f'  {BLACK_NAME}')
+        elif row == 2:
+            print(f'   {stone(BLACK)}: {count_board(board, BLACK):2d}')
+        elif row == 3:
+            print(f'  {WHITE_NAME}')
+        elif row == 4:
+            print(f'   {stone(WHITE)}: {count_board(board, WHITE):2d}')
+        else:
+            print()  # New line after each row
 
-# ## Youは自分で操作する（プレイヤーとして対戦する場合）
-# class You(OthelloAI):
+## Youは自分で操作する（プレイヤーとして対戦する場合）
+class You(OthelloAI):
 
-#     def move(self, board, color: int)->tuple[int, int]:
-#         """
-#         ボードの状態と色(color)が与えられたとき、
-#         どこに置くか人間に尋ねる(row, col)
-#         """
-#         valid_moves = get_valid_moves(board, color)
-#         MARK = '①②③④⑤⑥⑦⑧⑨'
-#         marks={}
-#         for i, rowcol in enumerate(valid_moves):
-#             if i < len(MARK):
-#                 marks[rowcol] = MARK[i]
-#                 marks[i+1] = rowcol
-#         display_board2(board, marks)
-#         n = int(input('どこにおきますか？ '))
-#         return marks[n]
+    def move(self, board, color: int)->tuple[int, int]:
+        """
+        ボードの状態と色(color)が与えられたとき、
+        どこに置くか人間に尋ねる(row, col)
+        """
+        valid_moves = get_valid_moves(board, color)
+        MARK = '①②③④⑤⑥⑦⑧⑨'
+        marks={}
+        for i, rowcol in enumerate(valid_moves):
+            if i < len(MARK):
+                marks[rowcol] = MARK[i]
+                marks[i+1] = rowcol
+        display_board2(board, marks)
+        n = int(input('どこにおきますか？ '))
+        return marks[n]
 
 # ## 16:48追加
 
-# def count_board(board, piece=EMPTY):
-#     return np.sum(board == piece)
+def count_board(board, piece=EMPTY):
+    return np.sum(board == piece)
 
-# def display_board(board, clear=True, sleep=0, black=None, white=None):
-#     """
-#     オセロ盤を表示する
-#     """
-#     global BLACK_NAME, WHITE_NAME
-#     if clear:
-#         clear_output(wait=True)
-#     if black:
-#         BLACK_NAME = black
-#     if white:
-#         WHITE_NAME = white
-#     for i, row in enumerate(board):
-#         for piece in row:
-#             print(stone(piece), end='')
-#         if i == 1:
-#             print(f'  {BLACK_NAME}')
-#         elif i == 2:
-#             print(f'   {stone(BLACK)}: {count_board(board, BLACK):2d}')
-#         elif i == 3:
-#             print(f'  {WHITE_NAME}')
-#         elif i == 4:
-#             print(f'   {stone(WHITE)}: {count_board(board, WHITE):2d}')
-#         else:
-#             print()  # New line after each row
-#     if sleep > 0:
-#         time.sleep(sleep)
+def display_board(board, clear=True, sleep=0, black=None, white=None):
+    """
+    オセロ盤を表示する
+    """
+    global BLACK_NAME, WHITE_NAME
+    if clear:
+        clear_output(wait=True)
+    if black:
+        BLACK_NAME = black
+    if white:
+        WHITE_NAME = white
+    for i, row in enumerate(board):
+        for piece in row:
+            print(stone(piece), end='')
+        if i == 1:
+            print(f'  {BLACK_NAME}')
+        elif i == 2:
+            print(f'   {stone(BLACK)}: {count_board(board, BLACK):2d}')
+        elif i == 3:
+            print(f'  {WHITE_NAME}')
+        elif i == 4:
+            print(f'   {stone(WHITE)}: {count_board(board, WHITE):2d}')
+        else:
+            print()  # New line after each row
+    if sleep > 0:
+        time.sleep(sleep)
 
-# class OthelloAI:
-#     def __init__(self, face, name):
-#         self.face = face
-#         self.name = name
+class OthelloAI:
+    def __init__(self, face, name):
+        self.face = face
+        self.name = name
 
-#     def move(self, board, color):
-#         # ここに移動のロジックを実装（基本的な実装）
-#         # この例では、有効な手の中からランダムに選択します
-#         valid_moves = get_valid_moves(board, color)
-#         return random.choice(valid_moves) if valid_moves else None
+    def move(self, board, color):
+        # ここに移動のロジックを実装（基本的な実装）
+        # この例では、有効な手の中からランダムに選択します
+        valid_moves = get_valid_moves(board, color)
+        return random.choice(valid_moves) if valid_moves else None
 
-#     def say(self, board, color):
-#         # ここに話すロジックを実装
-#         pass
+    def say(self, board, color):
+        # ここに話すロジックを実装
+        pass
 
-# class OchibiAI(OthelloAI):
-#     def __init__(self, face, name):
-#         super().__init__(face, name)
+class OchibiAI(OthelloAI):
+    def __init__(self, face, name):
+        super().__init__(face, name)
 
-#     def move(self, board, color):
-#         # OchibiAIの移動ロジックを実装
-#         # この例では、有効な手の中からランダムに選択します
-#         valid_moves = get_valid_moves(board, color)
-#         return random.choice(valid_moves) if valid_moves else None
+    def move(self, board, color):
+        # OchibiAIの移動ロジックを実装
+        # この例では、有効な手の中からランダムに選択します
+        valid_moves = get_valid_moves(board, color)
+        return random.choice(valid_moves) if valid_moves else None
 
-# class You(OthelloAI):
-#     def __init__(self, face, name):
-#         super().__init__(face, name)
+class You(OthelloAI):
+    def __init__(self, face, name):
+        super().__init__(face, name)
 
-#     def move(self, board, color):
-#         # 人間プレイヤーの移動ロジックを実装
-#         # この例では、ユーザーに手の入力を求めます
-#         valid_moves = get_valid_moves(board, color)
-#         if not valid_moves:
-#             return None
-#         print("有効な手:", valid_moves)
-#         move = None
-#         while move not in valid_moves:
-#             try:
-#                 row = int(input("行を入力してください: "))
-#                 col = int(input("列を入力してください: "))
-#                 move = (row, col)
-#             except ValueError:
-#                 print("無効な入力です。もう一度入力してください。")
-#         return move
+    def move(self, board, color):
+        # 人間プレイヤーの移動ロジックを実装
+        # この例では、ユーザーに手の入力を求めます
+        valid_moves = get_valid_moves(board, color)
+        if not valid_moves:
+            return None
+        print("有効な手:", valid_moves)
+        move = None
+        while move not in valid_moves:
+            try:
+                row = int(input("行を入力してください: "))
+                col = int(input("列を入力してください: "))
+                move = (row, col)
+            except ValueError:
+                print("無効な入力です。もう一度入力してください。")
+        return move
 
 # # 各AIクラスのインスタンスを作成
 # # teruchi = OthelloAI('🍦', 'てるち')
