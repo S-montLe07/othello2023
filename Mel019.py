@@ -382,12 +382,19 @@ class SeaAI(OthelloAI):
         self.face = face
         self.name = name
 
-    def evaluate_board(board, player):
+    # def evaluate_board(board, player):
+    #     return count_board(board, player)
+
+    def evaluate_board(self, board, player):
         return count_board(board, player)
 
-    def minimax(board, depth, player):
+    # def minimax(board, depth, player):
+    #     if depth == 0 or count_board(board, EMPTY) == 0:
+    #         return evaluate_board(board, player), None
+
+    def minimax(self, board, depth, player):
         if depth == 0 or count_board(board, EMPTY) == 0:
-            return evaluate_board(board, player), None
+            return self.evaluate_board(board, player), None
 
         best_move = None
         if player == BLACK:
@@ -411,7 +418,8 @@ class SeaAI(OthelloAI):
                     best_move = move
             return min_eval, best_move
 
-    def make_move(board, move, player):
+    # def make_move(board, move, player):
+    def make_move(self, board, move, player):
         r, c = move
         stones_to_flip = flip_stones(board, r, c, player)
         board[r, c] = player
@@ -419,11 +427,149 @@ class SeaAI(OthelloAI):
             board[r, c] = player
 
 class MinimaxAI(OthelloAI):
-    def __init__(self, face, name, depth=3):
+    # def __init__(self, face, name, depth=3):
+    #     super().__init__(face, name)
+    #     self.depth = depth
+
+    def __init__(self, face, name, depth=5):  # 探索の深さを増やす
         super().__init__(face, name)
         self.depth = depth
 
+    # def move(self, board, player):
+    #     _, best_move = minimax(board, self.depth, player)
+    #     return best_move
+
     def move(self, board, player):
-        _, best_move = minimax(board, self.depth, player)
+        _, best_move = self.minimax(board, self.depth, player)
         return best_move
+
+
+
+## 追加①アルファベータ枝刈りの追加 ##
+
+def minimax(self, board, depth, alpha, beta, player):
+    if depth == 0 or count_board(board, EMPTY) == 0:
+        return self.evaluate_board(board, player), None
+
+    valid_moves = get_valid_moves(board, player)
+    if not valid_moves:
+        return self.evaluate_board(board, player), None
+
+    best_move = None
+    if player == BLACK:
+        max_eval = -float('inf')
+        for move in valid_moves:
+            new_board = board.copy()
+            make_move(new_board, move, player)
+            eval, _ = self.minimax(new_board, depth - 1, alpha, beta, -player)
+            if eval > max_eval:
+                max_eval = eval
+                best_move = move
+            alpha = max(alpha, eval)
+            if beta <= alpha:
+                break
+        return max_eval, best_move
+    else:
+        min_eval = float('inf')
+        for move in valid_moves:
+            new_board = board.copy()
+            make_move(new_board, move, player)
+            eval, _ = self.minimax(new_board, depth - 1, alpha, beta, -player)
+            if eval < min_eval:
+                min_eval = eval
+                best_move = move
+            beta = min(beta, eval)
+            if beta <= alpha:
+                break
+        return min_eval, best_move
+
+
+
+## 追加②評価関数の改善 ##
+
+def evaluate_board(self, board, player):
+    # より洗練された評価ロジック
+    # 例えば、角や辺の占有、安定性、移動可能性などを考慮
+    score = 0
+    # 角の占有
+    score += 25 * (board[0,0] == player)
+    score += 25 * (board[0,7] == player)
+    score += 25 * (board[7,0] == player)
+    score += 25 * (board[7,7] == player)
+    # その他の評価ロジック...
+    return score
+
+
+
+## 追加③より洗練された評価関数 ##
+
+def evaluate_board(self, board, player):
+    score = 0
+    opp_player = -player
+
+    # 角の占有
+    corners = [(0, 0), (0, 7), (7, 0), (7, 7)]
+    for x, y in corners:
+        if board[x, y] == player:
+            score += 100  # 角は非常に価値が高い
+        elif board[x, y] == opp_player:
+            score -= 100
+
+    # エッジの安定性やモビリティなど、他の要素に対する評価を追加
+    # ...
+
+    # モビリティの評価
+    valid_moves_count = len(get_valid_moves(board, player))
+    score += valid_moves_count * 5  # 例: 合法手1つにつき5点
+
+    # フロンティアディスクの評価
+    # ...
+
+    # ゲームのフェーズに応じた戦略
+    # ...
+
+    return score
+
+
+
+## 追加④オープニングブックの使用 ##
+
+class OthelloAI:
+    # ...
+
+    def __init__(self, face, name):
+        # ...
+        self.opening_book = self.load_opening_book()
+        self.is_opening_phase = True
+
+    def load_opening_book(self):
+        # ここにオープニングブックのデータをロードするコード
+        # 例: {ボードの状態: 最適な手, ...}
+        return {
+            "..........*......O......***....": (5, 4),
+            # その他のオープニング手
+        }
+
+    def move(self, board, player):
+        if self.is_opening_phase:
+            # オープニングブックを使用して手を選択
+            opening_move = self.opening_book.get(board_to_string(board))
+            if opening_move:
+                return opening_move
+            else:
+                # オープニングブックの手がない場合は通常の戦略に移行
+                self.is_opening_phase = False
+
+        # ミニマックスアルゴリズムまたは他の戦略を使用
+        return self.minimax_strategy(board, player)
+
+    # ミニマックス戦略の実装
+    # ...
+
+def board_to_string(board):
+    # ボードを文字列に変換する関数
+    return ''.join(['O' if x == 1 else '*' if x == -1 else '.' for x in board.flatten()])
+
+
+
 
